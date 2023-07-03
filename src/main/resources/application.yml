@@ -1,0 +1,20 @@
+# 설정파일
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/jpashop
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+#       show_sql: true
+        format_sql: true
+
+logging:
+  level:
+    # logger에서 SQL을 보기 위해 -> show_sql은 system.out으로 뜨기 때문에 주석으로 빼줬다.
+    org.hibernate.sql: debug
