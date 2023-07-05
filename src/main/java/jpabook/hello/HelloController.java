@@ -1,4 +1,4 @@
-package jpabook.jpashop.hello;
+package jpabook.hello;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
