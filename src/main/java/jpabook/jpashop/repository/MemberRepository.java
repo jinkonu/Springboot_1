@@ -7,9 +7,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Repository                                                 // 스프링 빈으로 등록, JPA 예외를 스프링 기반 예외로 예외 변환
+@Repository                         // 스프링 빈으로 등록, JPA 예외를 스프링 기반 예외로 예외 변환
 public class MemberRepository {
-    @PersistenceContext                                     // 엔티티 메니저( EntityManager ) 주입
+    @PersistenceContext             // 엔티티 메니저( EntityManager ) 주입
     private EntityManager em;
 
     public void save(Member member) {
