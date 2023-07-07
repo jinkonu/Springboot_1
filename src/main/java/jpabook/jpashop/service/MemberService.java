@@ -20,20 +20,18 @@ public class MemberService {
     public void setMemberRepository(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
-    */
     // 필드에 직접 @Autowired 걸면 다른 리포지토리 인스턴스를 넣지 못한다는 단점이 발생
     // Setter에 @Autowired 걸면 실제 애플리케이션 돌아가는 시점에 누가 바꿀 수 있다는 단점이 발생
-
-
+    */
     /*
     @Autowired
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
-    */
     // 그래서 생성자를 통한 주입은 중간에 바꿀 수 있다는 단점을 상쇄한다.
     // 그리고 테스트할 때, MemberService 생성 시점에, 서비스가 의존하는 리포지토리도 신경써서 파라미터로 넣어준다는 장점도 발생한다.
     // 최신 스프링 버전에서는 @Autowired가 없어도 생성자에 직접 주입해준다.
+    */
 
     /*
     *  회원 가입
