@@ -19,3 +19,6 @@ logging:
     # logger에서 SQL을 보기 위해 -> show_sql은 system.out으로 뜨기 때문에 주석으로 빼줬다.
     org.hibernate.sql: debug
     org.hibernate.type: trace
+
+server:
+  port: 8080
