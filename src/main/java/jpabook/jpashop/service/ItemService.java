@@ -6,8 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Id;
 import java.util.List;
 
 @Service
@@ -19,6 +17,13 @@ public class ItemService {
     @Transactional
     public void saveItem(Item item) {
         itemRepository.save(item);
+    }
+
+    @Transactional
+    public void updateItem(Long itemId, UpdateItemDTO itemDTO) {
+        Item findItem = itemRepository.findOne(itemId);
+
+        findItem.change(itemDTO);
     }
 
     public List<Item> findItems() {
