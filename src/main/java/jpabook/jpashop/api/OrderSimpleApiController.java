@@ -5,8 +5,8 @@ import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.repository.OrderSearch;
-import jpabook.jpashop.repository.order.OrderSimpleQueryRepository;
-import jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryDTO;
+import jpabook.jpashop.repository.order.simpleQuery.OrderSimpleQueryDTO;
+import jpabook.jpashop.repository.order.simpleQuery.OrderSimpleQueryRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,20 +48,21 @@ public class OrderSimpleApiController {
 
     @GetMapping("/api/v3/simple-orders")
     public List<SimpleOrderDto> ordersV3() {            // Order를 조회하는 로직을 건드리지 않고 join만 추가
-        List<Order> orders = orderRepository.findAllWithMemberRepository();
+//        List<Order> orders = orderRepository.findAllWithMemberDelivery(offset, limit);
+        List<Order> orders = orderRepository.findAllByString(new OrderSearch());
         List<SimpleOrderDto> result = orders.stream()
                 .map(o -> new SimpleOrderDto(o))
                 .collect(toList());
 
         return result;
     }
+    // 커스텀 DTO를 가지고 조회하기 때문에 다른 API에서 재사용하기가 어려워진다. 또한 엔티티의 데이터 수정이 불가해진다. 코드도 지저분해진다.
+    // 대신 성능 최적화에서 우위에 있다.
 
     @GetMapping("/api/v4/simple-orders")
     public List<OrderSimpleQueryDTO> ordersV4() {
         return orderSimpleQueryRepository.findOrderDtos();
     }
-    // 커스텀 DTO를 가지고 조회하기 때문에 다른 API에서 재사용하기가 어려워진다. 또한 엔티티의 데이터 수정이 불가해진다. 코드도 지저분해진다.
-    // 대신 성능 최적화에서 우위에 있다.
 
     @Data
     static class SimpleOrderDto {

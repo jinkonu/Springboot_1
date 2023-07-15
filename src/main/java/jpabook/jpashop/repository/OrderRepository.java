@@ -103,11 +103,24 @@ public class OrderRepository {
         return query.getResultList();
     }
 
-    public List<Order> findAllWithMemberRepository() {
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
         return em.createQuery(
                 "select o from Order o " +
                         "join fetch o.member m " +
-                        "join fetch o.delivery d", Order.class
-        ).getResultList();
+                        "join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
+    public List<Order> findAllWithItem() {
+        return em.createQuery(
+                "select distinct o from Order o " +     // DB에서는 모든 column이 동일할 때만 distinct가 적용되므로, DB에서는 여전히 중복된다
+                        "join fetch o.member m " +              // 그러나 JPA로 왔을 때, Order 객체만 봤을 때 동일하면 걸러준다
+                        "join fetch o.delivery d " +
+                        "join fetch o.orderItems oi " +
+                        "join fetch oi.item i", Order.class).setFirstResult(1)
+                .setMaxResults(100)
+                .getResultList();
     }
 }
