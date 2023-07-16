@@ -10,6 +10,8 @@ import jpabook.jpashop.repository.order.query.OrderFlatDTO;
 import jpabook.jpashop.repository.order.query.OrderItemQueryDTO;
 import jpabook.jpashop.repository.order.query.OrderQueryDTO;
 import jpabook.jpashop.repository.order.query.OrderQueryRepository;
+import jpabook.jpashop.service.query.OrderDTO;
+import jpabook.jpashop.service.query.OrderQueryService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,12 +54,10 @@ public class OrderApiController {
                 .collect(toList());
     }
 
+    private final OrderQueryService orderQueryService;
     @GetMapping("/api/v3/orders")
     public List<OrderDTO> ordersV3() {
-        List<Order> orders = orderRepository.findAllWithItem();
-        return orders.stream()
-                .map(o -> new OrderDTO(o))
-                .collect(toList());
+        return orderQueryService.ordersV3();
     }
 
     @GetMapping("/api/v3.1/orders")
@@ -91,46 +91,5 @@ public class OrderApiController {
                 )).entrySet().stream()
                 .map(e -> new OrderQueryDTO(e.getKey().getId(), e.getKey().getName(), e.getKey().getOrderDate(), e.getKey().getOrderStatus(), e.getKey().getAddress(), e.getValue()))
                 .collect(toList());
-    }
-
-
-    @Data
-    static class OrderDTO {
-        private Long orderId;
-        private String name;
-        private LocalDateTime orderDate;
-        private OrderStatus orderStatus;
-        private Address address;
-
-        // 새로운 필드지만 엔티티인, OrderItem
-//        private List<OrderItem> orderItems;
-        private List<OrderItemDTO> orderItems;
-
-        public OrderDTO(Order order) {
-            orderId = order.getId();
-            name = order.getMember().getName();
-            orderDate = order.getOrderDate();
-            orderStatus = order.getStatus();
-            address = order.getDelivery().getAddress();
-
-            // OrderItem은 엔티티이기 때문에 getter를 호출해서 실제 값을 들여와야 프록시가 대체됨
-//            order.getOrderItems().stream().forEach(o -> o.getItem().getName());
-            orderItems = order.getOrderItems().stream()
-                    .map(orderItem -> new OrderItemDTO(orderItem))
-                    .collect(toList());
-        }
-    }
-
-    @Data
-    static class OrderItemDTO {
-        private String itemName;
-        private int orderPrice;
-        private int count;
-
-        public OrderItemDTO(OrderItem orderItem) {
-            itemName = orderItem.getItem().getName();
-            orderPrice = orderItem.getOrderPrice();
-            count = orderItem.getCount();
-        }
     }
 }
