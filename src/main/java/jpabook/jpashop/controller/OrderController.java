@@ -43,8 +43,7 @@ public class OrderController {
     }                                                                   // 예를 들어, 지금 여기서 Member 객체를 서비스 계층 order()로 넘겨주면, 얘는 영속성 컨텍스트에서 관리가 안된다.
 
     @GetMapping("/orders")
-    public String orderList(@ModelAttribute("orderSearch") OrderSearch orderSearch,
-                            Model model) {
+    public String orderList(@ModelAttribute("orderSearch") OrderSearch orderSearch, Model model) {
         List<Order> orders = orderService.findOrders(orderSearch);
         model.addAttribute("orders", orders);
 

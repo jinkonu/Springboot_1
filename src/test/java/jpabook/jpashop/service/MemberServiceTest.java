@@ -33,7 +33,7 @@ public class MemberServiceTest {
         Long saveId = memberService.join(member);                   // commit()이 기준이기 때문에 persist() 때문에 insert문이 나가지는 않는다.
     
         // then
-        assertEquals(member, memberRepository.findOne(saveId));     // JPA는 DB에서 들여온 객체가 동일하면 하나의 인스턴스로 관리한다.
+        assertEquals(member, memberRepository.findById(saveId).get());     // JPA는 DB에서 들여온 객체가 동일하면 하나의 인스턴스로 관리한다.
     }
     
     @Test( expected = IllegalStateException.class )
