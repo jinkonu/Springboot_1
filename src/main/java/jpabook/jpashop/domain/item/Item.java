@@ -2,13 +2,11 @@ package jpabook.jpashop.domain.item;
 
 import jpabook.jpashop.domain.Category;
 import jpabook.jpashop.exception.NotEnoughStockException;
-import jpabook.jpashop.service.UpdateItemDTO;
+import jpabook.jpashop.service.item.UpdateItemDTO;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Inheritance( strategy = InheritanceType.SINGLE_TABLE )
@@ -25,8 +23,9 @@ public abstract class Item {
 
     private int stockQuantity;
 
-    @ManyToMany( mappedBy = "items" )
-    private List<Category> categories = new ArrayList<Category>();
+    @ManyToOne( fetch = FetchType.LAZY )
+    @JoinColumn( name = "category_id" )
+    private Category category;
 
 
     // 비즈니스 로직
@@ -42,8 +41,7 @@ public abstract class Item {
         this.stockQuantity = left;
     }
 
-
-    public void change(UpdateItemDTO itemDTO) {
+    public void changeItem(UpdateItemDTO itemDTO) {
         this.setName(itemDTO.getName());
         this.setPrice(itemDTO.getPrice());
         this.setStockQuantity(itemDTO.getStockQuantity());

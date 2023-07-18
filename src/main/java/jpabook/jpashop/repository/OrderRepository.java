@@ -117,33 +117,33 @@ public class OrderRepository {
                 .getResultList();
     }
 
-//    public List<Order> findAll(OrderSearch orderSearch) {
-//        JPAQueryFactory query = new JPAQueryFactory(em);
-//        QOrder order = QOrder.order;
-//        QMember member = QMember.member;
-//
-//        return query
-//                .select(order)
-//                .from(order)
-//                .join(order.member, member)
-//                .where(statusEq(orderSearch.getOrderStatus()), nameLike(orderSearch.getMemberName()))
-//                .limit(1000)
-//                .fetch();
-//    }
-//
-//    private BooleanExpression nameLike(String memberName) {
-//        if (StringUtils.hasText(memberName))
-//            return null;
-//
-//        return member.name.like(memberName);
-//    }
-//
-//    private BooleanExpression statusEq(OrderStatus statusCond) {
-//        if (statusCond == null) {
-//            return null;
-//        }
-//        return QOrder.order.status.eq(statusCond);
-//    }
+    public List<Order> findAll(OrderSearch orderSearch) {
+        JPAQueryFactory query = new JPAQueryFactory(em);
+        QOrder order = QOrder.order;
+        QMember member = QMember.member;
+
+        return query
+                .select(order)
+                .from(order)
+                .join(order.member, member)
+                .where(statusEq(orderSearch.getOrderStatus()), nameLike(orderSearch.getMemberName()))
+                .limit(1000)
+                .fetch();
+    }
+
+    private BooleanExpression nameLike(String memberName) {
+        if (StringUtils.hasText(memberName))
+            return null;
+
+        return member.name.like(memberName);
+    }
+
+    private BooleanExpression statusEq(OrderStatus statusCond) {
+        if (statusCond == null) {
+            return null;
+        }
+        return QOrder.order.status.eq(statusCond);
+    }
 
     public List<Order> findAllWithItem() {
         return em.createQuery(

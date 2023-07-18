@@ -16,6 +16,7 @@ public class InitDB {
 
     @PostConstruct
     public void init() {
+        initService.dbInit();
         initService.dbInit1();
         initService.dbInit2();
     }
@@ -25,6 +26,15 @@ public class InitDB {
     @RequiredArgsConstructor
     static class InitService {
         private final EntityManager em;
+
+        public void dbInit() {
+            Category category1 = createCategory("book");
+            Category category2 = createCategory("movie");
+            Category category3 = createCategory("album");
+            em.persist(category1);
+            em.persist(category2);
+            em.persist(category3);
+        }
 
         public void dbInit1() {
             Member member = createMember("userA", new Address("seoul", "1", "11111"));
@@ -63,6 +73,7 @@ public class InitDB {
             Order order = Order.createOrder(member, delivery, orderItem1, orderItem2);
             em.persist(order);
         }
+
     }
 
     private static Delivery createDelivery(Member member) {
@@ -84,5 +95,11 @@ public class InitDB {
         member.setName(name);
         member.setAddress(address);
         return member;
+    }
+
+    private static Category createCategory(String name) {
+        Category category = new Category();
+        category.setName(name);
+        return category;
     }
 }
