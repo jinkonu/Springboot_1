@@ -5,6 +5,20 @@
 <div class="container">
   <div th:replace="fragments/bodyHeader :: bodyHeader"/>
   <div>
+    <div>
+      <form th:object="${categorySearch}" class="form-inline">
+        <div class="form-group mx-sm-1 mb-2">
+          <select th:field="*{category}" class="form-control">
+            <option value="">카테고리</option>
+            <option th:each="status : ${T(jpabook.jpashop.domain.item.Category_enum).values()}"
+                    th:value="${status}"
+                    th:text="${status}">option
+            </option>
+          </select>
+        </div>
+      </form>
+    </div>
+
     <table class="table table-striped">
       <thead>
       <tr>
@@ -14,7 +28,7 @@
       <tbody>
       <tr th:each="item : ${items}">
         <td th:text="${item.id}"></td>
-        <td th:text="${items.category.name}"></td>
+<!--        <td th:text="${items.category.name}"></td>-->
         <td th:text="${item.name}"></td>
         <td th:text="${item.price}"></td>
         <td th:text="${item.stockQuantity}"></td>
@@ -23,6 +37,7 @@
         </td> </tr>
       </tbody>
     </table>
+
   </div>
   <div th:replace="fragments/footer :: footer"/>
 </div> <!-- /container -->

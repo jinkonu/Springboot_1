@@ -8,9 +8,12 @@ import jpabook.jpashop.domain.item.Album;
 import jpabook.jpashop.domain.item.Book;
 import jpabook.jpashop.domain.item.Item;
 import jpabook.jpashop.domain.item.Movie;
+import jpabook.jpashop.repository.CategorySearch;
 import jpabook.jpashop.service.ItemService;
+import jpabook.jpashop.service.item.UpdateAlbumDTO;
 import jpabook.jpashop.service.item.UpdateBookDTO;
 import jpabook.jpashop.service.item.UpdateItemDTO;
+import jpabook.jpashop.service.item.UpdateMovieDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +29,7 @@ import java.util.List;
 public class ItemController {
     private final ItemService itemService;
 
+    // 상품 등록
     @GetMapping("/items/new")
     public String createItemForm(Model model) {
         model.addAttribute("form", new ItemForm());
@@ -77,15 +81,15 @@ public class ItemController {
     {
         Item findItem = itemService.findOne(id);
         if (findItem.getCategory().getName().equals("book")) {
-            model.addAttribute("form", new BookForm());
+            model.addAttribute("bookForm", new BookForm());
             return "items/createBookForm";
         }
-        else if (findItem.getCategory().getName().equals("book")) {
-            model.addAttribute("form", new MovieForm());
+        else if (findItem.getCategory().getName().equals("movie")) {
+            model.addAttribute("movieForm", new MovieForm());
             return "items/createMovieForm";
         }
         else {
-            model.addAttribute("form", new AlbumForm());
+            model.addAttribute("albumForm", new AlbumForm());
             return "items/createAlbumForm";
         }
     }
@@ -97,14 +101,33 @@ public class ItemController {
 
         return "redirect:/items";
     }
+    @PostMapping("/items/new/movie/{id}")
+    public String createMovie(@PathVariable("id") Long id, MovieForm form) {
+        UpdateMovieDTO movieDTO = new UpdateMovieDTO(form.getDirector(), form.getActor());
+        itemService.specifyMovie(id, movieDTO);
 
+        return "redirect:/items";
+    }
+    @PostMapping("items/new/album/{id}")
+    public String createAlbum(@PathVariable("id") Long id, AlbumForm form) {
+        UpdateAlbumDTO albumDTO = new UpdateAlbumDTO(form.getArtist(), form.getEtc());
+        itemService.specifyAlbum(id, albumDTO);
+
+        return "redirect:/items";
+    }
+
+
+    // 상품 조회
     @GetMapping("/items")
-    public String list(Model model) {
-        List<Item> items = itemService.findItems();
+    public String list(@ModelAttribute("category") CategorySearch categorySearch, Model model) {
+        List<Item> items = itemService.findItemsWithCategory(categorySearch);
         model.addAttribute("items", items);
+
         return "items/itemList";
     }
 
+
+    // 싱품 수정
     @GetMapping("items/{id}/edit")
     public String updateItemForm(@PathVariable("id") Long itemId, Model model) {
         Book item = (Book) itemService.findOne(itemId);

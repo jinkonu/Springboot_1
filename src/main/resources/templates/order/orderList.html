@@ -5,6 +5,7 @@
 <div class="container">
   <div th:replace="fragments/bodyHeader :: bodyHeader"/>
   <div>
+
     <div>
     <form th:object="${orderSearch}" class="form-inline">
       <div class="form-group mb-2">
@@ -20,6 +21,7 @@
       </div>
       <button type="submit" class="btn btn-primary mb-2">검색</button> </form>
   </div>
+
     <table class="table table-striped">
       <thead>
       <tr>
@@ -43,6 +45,7 @@
       </tr>
       </tbody>
     </table>
+
   </div>
   <div th:replace="fragments/footer :: footer"/>
 </div> <!-- /container -->

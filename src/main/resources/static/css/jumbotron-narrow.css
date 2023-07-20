@@ -25,7 +25,6 @@ body {
 .footer {
     padding-top: 19px;
     color: #777;
-
     border-top: 1px solid #e5e5e5;
 }
 /* Customize container */
@@ -61,7 +60,6 @@ body {
     .footer {
         padding-left: 0;
         padding-right: 0;
-
     }
     /* Space out the masthead */
     .header {

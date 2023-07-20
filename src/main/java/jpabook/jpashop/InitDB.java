@@ -17,8 +17,6 @@ public class InitDB {
     @PostConstruct
     public void init() {
         initService.dbInit();
-        initService.dbInit1();
-        initService.dbInit2();
     }
 
     @Component
@@ -34,16 +32,19 @@ public class InitDB {
             em.persist(category1);
             em.persist(category2);
             em.persist(category3);
+
+            dbInit1(category1);
+            dbInit2(category1);
         }
 
-        public void dbInit1() {
+        public void dbInit1(Category category) {
             Member member = createMember("userA", new Address("seoul", "1", "11111"));
             em.persist(member);
 
-            Book book1 = createBook("JPA1 BOOK", 10000, 100);
+            Book book1 = createBook("JPA1 BOOK", 10000, 100, category);
             em.persist(book1);
 
-            Book book2 = createBook("JPA2 BOOK", 20000, 100);
+            Book book2 = createBook("JPA2 BOOK", 20000, 100, category);
             em.persist(book2);
 
             OrderItem orderItem1 = OrderItem.createOrderItem(book1, 10000, 1);
@@ -55,14 +56,14 @@ public class InitDB {
             em.persist(order);
         }
 
-        public void dbInit2() {
+        public void dbInit2(Category category) {
             Member member = createMember("userB", new Address("newyork", "2", "11111"));
             em.persist(member);
 
-            Book book1 = createBook("SPRING1 BOOK", 20000, 200);
+            Book book1 = createBook("SPRING1 BOOK", 20000, 200, category);
             em.persist(book1);
 
-            Book book2 = createBook("SPRING2 BOOK", 40000, 300);
+            Book book2 = createBook("SPRING2 BOOK", 40000, 300, category);
             em.persist(book2);
 
             OrderItem orderItem1 = OrderItem.createOrderItem(book1, 20000, 3);
@@ -82,12 +83,13 @@ public class InitDB {
         return delivery;
     }
 
-    private static Book createBook(String name, int price, int stockQuantity) {
-        Book book1 = new Book();
-        book1.setName(name);
-        book1.setPrice(price);
-        book1.setStockQuantity(stockQuantity);
-        return book1;
+    private static Book createBook(String name, int price, int stockQuantity, Category category) {
+        Book book = new Book();
+        book.setName(name);
+        book.setPrice(price);
+        book.setStockQuantity(stockQuantity);
+        book.setCategory(category);
+        return book;
     }
 
     private static Member createMember(String name, Address address) {

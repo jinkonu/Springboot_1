@@ -131,11 +131,11 @@ public class OrderRepository {
                 .fetch();
     }
 
-    private BooleanExpression nameLike(String memberName) {
-        if (StringUtils.hasText(memberName))
+    private BooleanExpression nameLike(String nameCond) {
+        if (!StringUtils.hasText(nameCond))
             return null;
 
-        return member.name.like(memberName);
+        return member.name.like(nameCond);
     }
 
     private BooleanExpression statusEq(OrderStatus statusCond) {
